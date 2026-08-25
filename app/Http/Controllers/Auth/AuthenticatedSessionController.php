@@ -30,10 +30,12 @@ class AuthenticatedSessionController extends Controller
         
         \App\Models\LogAktivitas::catat('Melakukan Login Sistem');
         
-        $user = Auth::user();
-        $message = $user->role === 'admin' ? 'Selamat datang, Administrator!' : 'Selamat datang, Guru!';
+        $user = $request->user();
+        $sapaan = ($user->role === 'admin') ? 'Admin' : 'Guru';
+        
+        session()->put('sweetalert_success', "Selamat datang {$sapaan} di Sistem Presensi!");
 
-        return redirect()->intended(route('dashboard', absolute: false))->with('success', $message);
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
@@ -51,6 +53,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Anda telah berhasil keluar dari sistem.');
+        session()->put('sweetalert_success', 'Anda telah berhasil keluar dari sistem.');
+
+        return redirect('/');
     }
 }

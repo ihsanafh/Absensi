@@ -18,33 +18,65 @@
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
     </style>
-
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 {{ $slot }}
-    @if(session('success'))
-    <script type="module">
-        window.Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: '{!! addslashes(session('success')) !!}',
-            showConfirmButton: false,
-            timer: 3000
-        });
-    </script>
+    @if(session()->has('sweetalert_success'))
+        <script type="module">
+            window.Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: "{{ session('sweetalert_success') }}",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        </script>
+        @php
+            session()->forget('sweetalert_success');
+        @endphp
+    @elseif(session()->has('success'))
+        <script type="module">
+            window.Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        </script>
     @endif
-    @if(session('error'))
-    <script type="module">
-        window.Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: '{!! addslashes(session('error')) !!}',
-            showConfirmButton: false,
-            timer: 3000
-        });
-    </script>
+
+    @if(session()->has('sweetalert_error'))
+        <script type="module">
+            window.Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: "{{ session('sweetalert_error') }}",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        </script>
+        @php
+            session()->forget('sweetalert_error');
+        @endphp
+    @elseif(session()->has('error'))
+        <script type="module">
+            window.Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: "{{ session('error') }}",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        </script>
     @endif
 </html>
